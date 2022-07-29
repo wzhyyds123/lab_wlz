@@ -31,8 +31,8 @@ Route::middleware('role:user')->prefix('users')->group(function (){
 });//学生端接口
 
 Route::prefix('admin')->group(function (){
-    Route::post('login','userController@login');  //用户登录
-    Route::post('registered','userController@registered');  //用户注册
+    Route::post('login','adminController@login');  //用户登录
+    Route::post('registered','adminController@registered');  //用户注册
 
 });
 
