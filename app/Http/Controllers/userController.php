@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 use App\import\UsersImport;
+use App\Model\admin;
 use App\Model\User;
 
 use Illuminate\Http\Request;
@@ -46,6 +47,26 @@ class userController extends Controller
                 json_success('注册失败!该工号已经注册过了！',null,100  ) ;
         }
     }
+
+    /**
+     * @param Request $registeredRequest
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function adminregisted(Request $registeredRequest)
+    {
+        $count = admin::checknumber($registeredRequest);   //检测账号密码是否存在
+        if($count == 0)
+        {
+            $student_id = admin::createUser(self::userHandle($registeredRequest));
+            return  $student_id ?
+                json_success('注册成功!',$student_id,200  ) :
+                json_fail('注册失败!',null,100  ) ;
+        }
+        else{
+            return
+                json_success('注册失败!该工号已经注册过了！',null,100  ) ;
+        }
+    }
     /**
      * Get a JWT via given credentials.
      *
@@ -64,6 +85,20 @@ class userController extends Controller
             json_fail('登录失败!账号或密码错误',null, 100 ) ;
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function adminlogin()
+
+    {
+
+        $credentials = request(['email', 'password']);
+        $token = auth('api2')->attempt($credentials);
+
+        return $token?
+            json_success('登录成功!',$token,  200):
+            json_fail('登录失败!账号或密码错误',null, 100 ) ;
+    }
 
     /**
      * Log the user out (Invalidate the token).
