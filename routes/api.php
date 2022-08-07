@@ -39,3 +39,6 @@ Route::prefix('admin')->group(function (){
 Route::middleware('role:admin')->prefix('admin')->group(function (){
 
 });//管理员端接口
+
+
+Route::post('find','TestController@WzhFind');  //用户注册
